@@ -1,0 +1,37 @@
+{% extends 'recipes/base.html' %}
+{% block title %}
+    {% if form.instance.id %}
+        Редактирование рецепта - Сайт рецептов
+    {% else %}
+        Добавление рецепта - Сайт рецептов
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">
+        {% if form.instance.id %}
+            Редактирование "{{ form.instance.title }}"
+        {% else %}
+            Новый рецепт
+        {% endif %}
+    </h1>
+    <!-- Форма для рецепта -->
+    <form method="post" enctype="multipart/form-data" class="col-md-8">
+        {% csrf_token %}
+        <!-- Вывод полей формы -->
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <!-- Кнопка отправки -->
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <a href="{% url 'index' %}" class="btn btn-secondary">Отмена</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'recipes/base.html' %}
+{% block title %}Вход - Сайт рецептов{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Вход</h1>
+    <!-- Форма входа -->
+    <form method="post" class="col-md-6">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label" for="id_username">Имя пользователя</label>
+            <input type="text" name="username" id="id_username" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="id_password">Пароль</label>
+            <input type="password" name="password" id="id_password" class="form-control" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+        <!-- Ссылка на регистрацию -->
+        <p class="mt-2">Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+    </form>
+{% endblock %}

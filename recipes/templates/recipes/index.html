@@ -1,0 +1,26 @@
+{% extends 'recipes/base.html' %}
+<!-- Переопределение заголовка -->
+{% block title %}Главная - Сайт рецептов{% endblock %}
+
+<!-- Основное содержимое -->
+{% block content %}
+    <h1 class="mb-4">Случайные рецепты</h1>
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="max-height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Рецептов пока нет. Добавьте первый!</p>
+        {% endfor %}
+    </div>
+{% endblock %}

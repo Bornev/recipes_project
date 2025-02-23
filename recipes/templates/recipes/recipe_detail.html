@@ -1,0 +1,30 @@
+{% extends 'recipes/base.html' %}
+{% block title %}{{ recipe.title }} - Сайт рецептов{% endblock %}
+
+{% block content %}
+    <h1>{{ recipe.title }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" class="img-fluid" alt="{{ recipe.title }}" style="max-height: 400px;">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <p><strong>Описание:</strong> {{ recipe.description }}</p>
+            <p><strong>Ингредиенты:</strong> {{ recipe.ingredients|linebreaks }}</p>
+            <p><strong>Шаги приготовления:</strong> {{ recipe.steps|linebreaks }}</p>
+            <p><strong>Время приготовления:</strong> {{ recipe.cooking_time }} мин</p>
+            <p><strong>Автор:</strong> {{ recipe.author.username }}</p>
+            <p><strong>Категории:</strong> 
+                {% for category in recipe.categories.all %}
+                    {{ category.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    Нет категорий
+                {% endfor %}
+            </p>
+            {% if user == recipe.author %}
+                <a href="{% url 'recipe_edit' recipe.id %}" class="btn btn-warning">Редактировать</a>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

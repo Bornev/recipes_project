@@ -1,0 +1,26 @@
+{% extends 'recipes/base.html' %}
+{% block title %}Регистрация - Сайт рецептов{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Регистрация</h1>
+    <!-- Форма регистрации -->
+    <form method="post" class="col-md-6">
+        {% csrf_token %} <!-- Токен защиты от CSRF-атак -->
+        <!-- Вывод полей формы -->
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="text-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <!-- Кнопка отправки -->
+        <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+        <!-- Ссылка на вход -->
+        <p class="mt-2">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+    </form>
+{% endblock %}
