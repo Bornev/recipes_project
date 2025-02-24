@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from random import sample
 from .models import Recipe, Category
-from .forms import RecipeForm, UserRegisterForm
+from .forms import RecipeForm, UserRegisterForm, CategoryForm
 from django.db.models import Q
 
 # Главная страница с 5 случайными рецептами
@@ -123,3 +123,18 @@ def recipe_edit(request, recipe_id):
     else:
         form = RecipeForm(instance=recipe)  # Форма с данными рецепта
     return render(request, 'recipes/recipe_form.html', {'form': form})
+
+@login_required  # Только авторизованные пользователи
+def category_create(request):
+    """
+    Обрабатывает создание новой категории через форму CategoryForm.
+    """
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()  # Сохраняем категорию
+            messages.success(request, 'Категория успешно создана!')
+            return redirect('recipe_create')  # Перенаправляем на создание рецепта
+    else:
+        form = CategoryForm()
+    return render(request, 'recipes/category_form.html', {'form': form})

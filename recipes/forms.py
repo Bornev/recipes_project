@@ -6,7 +6,8 @@
 
 from django import forms
 from django.contrib.auth.models import User
-from .models import Recipe
+from .models import Recipe, Category
+
 
 # Форма для добавления и редактирования рецептов
 class RecipeForm(forms.ModelForm):
@@ -101,3 +102,17 @@ class UserRegisterForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
+class CategoryForm(forms.ModelForm):
+    """
+    Форма для создания новой категории.
+    """
+    class Meta:
+        model = Category
+        fields = ['name']
+        labels = {
+            'name': 'Название категории',
+        }
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }

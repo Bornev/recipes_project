@@ -15,10 +15,8 @@
             Новый рецепт
         {% endif %}
     </h1>
-    <!-- Форма для рецепта -->
     <form method="post" enctype="multipart/form-data" class="col-md-8">
         {% csrf_token %}
-        <!-- Вывод полей формы -->
         {% for field in form %}
             <div class="mb-3">
                 <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -30,8 +28,8 @@
                 {% endif %}
             </div>
         {% endfor %}
-        <!-- Кнопка отправки -->
         <button type="submit" class="btn btn-success">Сохранить</button>
         <a href="{% url 'index' %}" class="btn btn-secondary">Отмена</a>
+        <a href="{% url 'category_create' %}" class="btn btn-info mt">Создать новую категорию</a>
     </form>
 {% endblock %}
