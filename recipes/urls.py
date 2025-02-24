@@ -28,4 +28,6 @@ urlpatterns = [
 
     # Редактирование рецепта
     path('recipe/<int:recipe_id>/edit/', views.recipe_edit, name='recipe_edit'),
+
+    path('recipes/', views.recipe_list, name='recipe_list'),
 ]

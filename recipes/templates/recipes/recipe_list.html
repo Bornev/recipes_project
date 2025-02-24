@@ -1,0 +1,40 @@
+{% extends 'recipes/base.html' %}
+{% block title %}Список рецептов - Сайт рецептов{% endblock %}
+
+{% block content %}
+    <h1 class="mb-4">Список рецептов</h1>
+    
+    <!-- Фильтр по категориям -->
+    <div class="mb-3">
+        <form method="get" class="d-flex">
+            <label for="category" class="me-2">Выберите категорию:</label>
+            <select name="category" id="category" class="form-select" onchange="this.form.submit()">
+                <option value="">Все категории</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category|add:"0" == category.id %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <div class="row">
+        {% for recipe in recipes %}
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" class="card-img-top" alt="{{ recipe.title }}" style="max-height: 200px; object-fit: cover;">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ recipe.title }}</h5>
+                        <p class="card-text">{{ recipe.description|truncatewords:20 }}</p>
+                        <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-primary">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Рецептов в этой категории нет.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

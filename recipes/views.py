@@ -9,8 +9,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from random import sample
-from .models import Recipe
+from .models import Recipe, Category
 from .forms import RecipeForm, UserRegisterForm
+from django.db.models import Q
 
 # Главная страница с 5 случайными рецептами
 def index(request):
@@ -70,6 +71,21 @@ def user_logout(request):
     logout(request)  # Завершение сессии
     messages.success(request, 'Вы успешно вышли!')
     return redirect('index')  # Перенаправление на главную
+
+# Список рецептов с фильтром по категориям
+def recipe_list(request):
+    """
+    Отображает список всех рецептов с возможностью фильтрации по категории.
+    """
+    category_id = request.GET.get('category')  # Получаем ID категории из GET-параметра
+    recipes = Recipe.objects.all()
+
+    if category_id:
+        recipes = recipes.filter(categories__id=category_id)  # Фильтрация по категории
+
+    categories = Category.objects.all()  # Получаем все категории для фильтра
+    return render(request, 'recipes/recipe_list.html', {'recipes': recipes, 'categories':
+        categories, 'selected_category': category_id})
 
 # Добавление нового рецепта (только для авторизованных)
 @login_required
