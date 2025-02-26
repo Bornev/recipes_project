@@ -29,7 +29,9 @@ urlpatterns = [
     # Редактирование рецепта
     path('recipe/<int:recipe_id>/edit/', views.recipe_edit, name='recipe_edit'),
 
+    # Список рецептов
     path('recipes/', views.recipe_list, name='recipe_list'),
 
+    # РСоздание новой категории
     path('category/create/', views.category_create, name='category_create'),
 ]
