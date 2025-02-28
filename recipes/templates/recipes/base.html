@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Заголовок страницы, который можно переопределить в дочерних шаблонах -->
     <title>{% block title %}Сайт рецептов{% endblock %}</title>
-    <!-- Подключение стилей (Bootstrap) -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Подключение стилей Bootstrap с параметрами безопасности -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
 </head>
 <body>
-    <!-- Навигационная панель -->
+    <!-- Навигационная панель с адаптивным дизайном -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
+            <!-- Название сайта -->
             <a class="navbar-brand" href="{% url 'index' %}">Сайт рецептов</a>
-            <div class="collapse navbar-collapse">
+            <!-- Кнопка бургера для мобильных устройств -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- Содержимое навигации (сворачивается на мобильных устройствах) -->
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <!-- Динамическая навигация в зависимости от авторизации -->
                     {% if user.is_authenticated %}
@@ -21,10 +27,11 @@
                             <a class="nav-link" href="{% url 'recipe_create' %}">Добавить рецепт</a>
                         </li>
                         <li class="nav-item">
-                        <a class="nav-link" href="{% url 'recipe_list' %}">Список рецептов</a>  <!-- Новая ссылка -->
-                    </li>
+                            <a class="nav-link" href="{% url 'recipe_list' %}">Список рецептов</a>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Выйти ({{ user.username }})</a>
+                            <!-- Укороченный текст для мобильных устройств -->
+                            <a class="nav-link" href="{% url 'logout' %}">Выйти{% if user.username|length > 10 %} ({{ user.username|truncatechars:8 }}){% else %} ({{ user.username }}){% endif %}</a>
                         </li>
                     {% else %}
                         <li class="nav-item">
@@ -39,7 +46,7 @@
         </div>
     </nav>
 
-    <!-- Контейнер для сообщений (например, "Вы успешно вошли") -->
+    <!-- Контейнер для сообщений (адаптивный дизайн) -->
     <div class="container mt-3">
         {% if messages %}
             {% for message in messages %}
@@ -57,7 +64,24 @@
         {% endblock %}
     </main>
 
-    <!-- Подключение скриптов Bootstrap (для интерактивности) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Подключение скриптов Bootstrap с параметрами безопасности -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-GeU7DDhWDEnV2nT1NpdL+EyK0L1G8R4cNItN4N2u/ZM/4vT2N3q3N1/BW7KG2bw" crossorigin="anonymous"></script>
+    <!-- Отладочный JavaScript для проверки -->
+    <script>
+        console.log('Bootstrap loaded:', typeof bootstrap !== 'undefined');
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbarToggler = document.querySelector('.navbar-toggler');
+            if (navbarToggler) {
+                navbarToggler.addEventListener('click', function() {
+                    console.log('Toggler clicked, collapsing:', document.querySelector('#navbarNav').classList.contains('show'));
+                    // Проверка состояния коллапса
+                    const navbarCollapse = document.querySelector('#navbarNav');
+                    if (navbarCollapse) {
+                        navbarCollapse.classList.toggle('show');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
